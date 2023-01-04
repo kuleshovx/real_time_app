@@ -1,0 +1,89 @@
+version: '3'
+services:
+  zookeeper:
+    container_name: zookeeper
+    image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
+    networks:
+      - ui-network
+  kafka:
+    container_name: kafka
+    image: quay.io/debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+    networks:
+      - ui-network
+  db-pg:
+    container_name: db-pg
+    image: quay.io/debezium/example-postgres:${DEBEZIUM_VERSION}
+    ports:
+      - "65432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - ui-network
+  connect:
+    container_name: connect
+    image: quay.io/debezium/connect:nightly
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - db-pg
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+      - ENABLE_DEBEZIUM_SCRIPTING=true
+      - CONNECT_REST_EXTENSION_CLASSES=io.debezium.kcrestextension.DebeziumConnectRestExtension
+      # - KEY_CONVERTER=io.confluent.connect.avro.AvroConverter
+      # - VALUE_CONVERTER=io.confluent.connect.avro.AvroConverter
+      # - CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL=http://schema-registry:8081
+      # - CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL=http://schema-registry:8081
+    networks:
+      - ui-network
+  debezium-ui:
+    container_name: debezium-ui
+    image: quay.io/debezium/debezium-ui:${DEBEZIUM_VERSION}
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CONNECT_URIS=http://connect:8083
+    depends_on:
+      - connect
+    networks:
+      - ui-network
+  clickhouse:
+    image: yandex/clickhouse-server
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+      - "9009:9009"
+    networks:
+      - ui-network
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8081:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    networks:
+      - ui-network
+  # schema-registry:
+  #   image: confluentinc/cp-schema-registry:5.5.3
+  #   environment:
+  #     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
+  #     - SCHEMA_REGISTRY_HOST_NAME=schema-registry
+  #     - SCHEMA_REGISTRY_LISTENERS=http://schema-registry:8081,http://localhost:8081
+  #   networks:
+  #     - ui-network
+networks:
+  ui-network:
+    external: false
