@@ -60,6 +60,7 @@ TABLESPACE pg_default;
 
 CREATE TABLE IF NOT EXISTS public.sales
 (
+    ext_id uuid NOT NULL,
     date date NOT NULL,
     asu_uuid uuid NOT NULL,
     depot_uuid uuid NOT NULL,
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS public.sales
     is_delete boolean NOT NULL,
     tank_uuid uuid NOT NULL,
     plan_uuid uuid NOT NULL,
-    CONSTRAINT sales_pkey PRIMARY KEY (date, asu_uuid, depot_uuid, version, tank_uuid, plan_uuid),
+    CONSTRAINT sales_pkey PRIMARY KEY (ext_id),
     CONSTRAINT asu_fkey FOREIGN KEY (asu_uuid)
         REFERENCES public.asu (ext_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -88,3 +89,28 @@ CREATE TABLE IF NOT EXISTS public.sales
 )
 
 TABLESPACE pg_default;
+
+-- Index: asu_idx
+
+-- DROP INDEX IF EXISTS public.asu_idx;
+
+CREATE INDEX IF NOT EXISTS asu_idx
+    ON public.sales USING btree
+    (asu_uuid ASC NULLS LAST, tank_uuid ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: depot_idx
+
+-- DROP INDEX IF EXISTS public.depot_idx;
+
+CREATE INDEX IF NOT EXISTS depot_idx
+    ON public.sales USING btree
+    (depot_uuid ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: version_idx
+
+-- DROP INDEX IF EXISTS public.version_idx;
+
+CREATE INDEX IF NOT EXISTS version_idx
+    ON public.sales USING btree
+    (version ASC NULLS LAST)
+    TABLESPACE pg_default;
