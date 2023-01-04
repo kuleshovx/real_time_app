@@ -29,7 +29,7 @@ TANK_CH_TABLE = "tank"
 
 UPDATE_MARTS = (
     "INSERT INTO sales_finalized SELECT * FROM sales_new",
-    "DELETE FROM sales WHERE version < '{{data_interval_end}}'"
+    """ALTER TABLE sales DELETE WHERE version < '{{data_interval_end.strftime("%Y-%m-%d %H:%M:%S")}}'"""
 )
 
 SQL_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
