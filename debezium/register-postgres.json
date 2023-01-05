@@ -1,0 +1,22 @@
+{
+  "name": "postgres",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "topic.prefix": "postgres",
+    "database.hostname": "rc1b-yeh418hckp2mzorh.mdb.yandexcloud.net",
+    "database.port": 6432,
+    "database.user": "online",
+    "database.password": "Ldtvsthp8l",
+    "database.dbname": "online",
+    "database.sslmode": "require",
+    "plugin.name": "pgoutput",
+    "publication.autocreate.mode": "filtered",
+    "table.include.list": "public.sales",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}
