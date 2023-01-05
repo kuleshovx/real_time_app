@@ -14,6 +14,7 @@ services:
      - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
+     - KAFKA_ADVERTISED_HOST_NAME=84.201.136.153
   connect:
     image: quay.io/debezium/connect:2.0
     # ports:
