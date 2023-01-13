@@ -19,3 +19,7 @@
 * Kafka Connect, Debezium - speed layer
 * Nocodb - low code платформа (для демо)
 * Superset
+
+## Выводы
+
+Выглядит как overengeneering
