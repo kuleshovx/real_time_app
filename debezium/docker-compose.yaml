@@ -17,8 +17,8 @@ services:
      - KAFKA_ADVERTISED_HOST_NAME=84.201.136.153
   connect:
     image: quay.io/debezium/connect:2.0
-    # ports:
-    #  - 8083:8083
+    ports:
+     - 8083:8083
     links:
      - kafka
     environment:

@@ -8,7 +8,7 @@ CREATE TABLE queue (
   tank_uuid String,
   plan_uuid String,
   ext_id String
-) ENGINE = Kafka('84.201.136.153:9092', 'postgres.public.sales', 'ch', 'JSONEachRow');
+) ENGINE = Kafka('130.193.40.81:9092', 'postgres.public.sales', 'ch', 'JSONEachRow');
 
 
 CREATE MATERIALIZED VIEW consumer TO sales AS 
