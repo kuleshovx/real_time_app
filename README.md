@@ -4,10 +4,16 @@
 
 ![image](project.png)
 
+## Цели
+
+1. Реализовать PoC потоковой обработки
+2. Опробовать инструменты: Clickhouse, Kafka Connect, Debezium
+3. Изучить возмоэножности Yandex Cloud
+
 ## Используемые технологии
 
-* PostgreSQL
-* Clickhouse
+* PostgreSQL (Managed)
+* Clickhouse (Managed)
 * Airflow - batch layer
 * Kafka, Zookeeper
 * Kafka Connect, Debezium - speed layer
