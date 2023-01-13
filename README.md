@@ -6,10 +6,10 @@
 
 ## Используемые технологии
 
-* Managed PostgreSQL
-* Managed Clickhouse
-* Airflow как batch layer
+* PostgreSQL
+* Clickhouse
+* Airflow - batch layer
 * Kafka, Zookeeper
-* Kafka Connect, Debezium как speed layer
-* Nocodb - low code платформа для демо
+* Kafka Connect, Debezium - speed layer
+* Nocodb - low code платформа (для демо)
 * Superset
