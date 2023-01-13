@@ -22,4 +22,4 @@
 
 ## Выводы
 
-Выглядит как overengeneering
+Выглядит как over engineering
